@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using CanopyManage.Common.Logger;
 
 namespace CanopyManage.WebService
 {
@@ -28,6 +29,7 @@ namespace CanopyManage.WebService
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddApiVersioning();
+            services.RegisterLogger(Configuration["Logging:InstrumentationKey"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
