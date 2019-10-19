@@ -29,25 +29,17 @@ namespace CanopyManage.WebService.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceAccountSubmissionRequest request)
         {
-            try
+            var command = new SubmitServiceAccountCommand()
             {
-                var command = new SubmitServiceAccountCommand()
-                {
-                    ServiceNowSettingID = request.ServiceNowSettingID,
-                    TenantId = request.TenantId,
-                    ServiceNowUsername = request.ServiceNowUsername,
-                    ServiceNowPassword = request.ServiceNowPassword
-                };
+                ServiceNowSettingID = request.ServiceNowSettingID,
+                TenantId = request.TenantId,
+                ServiceNowUsername = request.ServiceNowUsername,
+                ServiceNowPassword = request.ServiceNowPassword
+            };
 
-                await mediator.Send(command);
+            await mediator.Send(command);
 
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-
-                return BadRequest();
-            }
+            return Ok();
         }
     }
 }

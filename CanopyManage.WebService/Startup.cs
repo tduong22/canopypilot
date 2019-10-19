@@ -2,7 +2,9 @@
 using Autofac.Extensions.DependencyInjection;
 using CanopyManage.Application.Compositions;
 using CanopyManage.Common.Logger;
+using CanopyManage.Infrastructure.Compositions;
 using CanopyManage.WebService.Compositions;
+using CanopyManage.WebService.Infrastructure.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using CanopyManage.Infrastructure.Compositions;
 
 namespace CanopyManage.WebService
 {
@@ -26,7 +27,10 @@ namespace CanopyManage.WebService
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add(typeof(HttpGlobalExceptionFilter));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                  .AddControllersAsServices();
             services.AddApiVersioning();
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
