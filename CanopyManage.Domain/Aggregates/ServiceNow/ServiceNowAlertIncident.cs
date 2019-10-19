@@ -5,7 +5,7 @@ namespace CanopyManage.Domain.Aggregates
     public class ServiceNowAlertIncident : AlertIncident {
 
         private const string _serviceNowConst = "ServiceNow";
-        public string ServiceNowSettingId { get; set; }
+        public ServiceNowSetting ServiceNowSetting { get; set; }
 
         public ServiceNowAlertIncident()
         {
