@@ -26,26 +26,4 @@ namespace CanopyManage.Domain.Aggregates
         public DateTime DateTime { get; set; }
         public ServiceIncidentSeverity ServiceIncidentSeverity  { get; set; }
     }
-
-    public class AlertIncident : ServiceIncident {
-
-        public string AlertType { get; set; }
-        public string AlertId { get; set; }
-    }
-
-    public class ServiceNowAlertIncident : AlertIncident {
-
-        private const string _serviceNowConst = "ServiceNow";
-        public string ServiceNowSettingId { get; set; }
-
-        public ServiceNowAlertIncident()
-        {
-            ExternalServiceInfo = new ExternalServiceInfo()
-            {
-                ServiceName = _serviceNowConst,
-                Environment = "Default",
-                Owner = string.Empty
-            };
-        }
-    }
 }
