@@ -6,7 +6,7 @@ namespace CanopyManage.Domain.SeedWork
     {
         private TIdentity id = default(TIdentity);
 
-        public TIdentity Id
+        public virtual TIdentity Id
         {
             get
             {
