@@ -4,7 +4,8 @@ using System;
 
 namespace CanopyManage.Domain.Aggregates
 {
-    public enum ServiceIncidentSeverity {
+    public enum ServiceIncidentSeverity
+    {
         Information = 10,
         Warning = 20,
         Serious = 30,
@@ -24,6 +25,6 @@ namespace CanopyManage.Domain.Aggregates
         public string Description { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
-        public ServiceIncidentSeverity ServiceIncidentSeverity  { get; set; }
+        public ServiceIncidentSeverity ServiceIncidentSeverity { get; set; }
     }
 }
