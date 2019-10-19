@@ -5,7 +5,8 @@ namespace CanopyManage.Domain.ValueObjects
 {
     public class ServiceNowSetting : ValueObject
     {
-        public ServiceNowSetting() {
+        public ServiceNowSetting()
+        {
 
         }
         public string ServiceNowSettingId { get; set; }

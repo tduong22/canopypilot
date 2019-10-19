@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace CanopyManage.Infrastructure.Azure.KeyVault
 {
-    public interface IDataKeyVault
+    public interface IDataKeyVault<TKey, TValue>
     {
-        Task<string> GetSecretAsync(string key, CancellationToken cancellationToken);
-        Task CreateSecretAsync(string key, string value, CancellationToken cancellationToken);
+        Task<TValue> GetSecretAsync(TKey key, CancellationToken cancellationToken);
+        Task<TValue> CreateSecretAsync(TKey key, TValue value, CancellationToken cancellationToken);
     }
 }
