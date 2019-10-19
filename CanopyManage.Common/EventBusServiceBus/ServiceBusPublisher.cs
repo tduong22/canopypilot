@@ -29,14 +29,6 @@
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task PublishAsync(IntegrationEvent @event, IDictionary<string, string> userDictionary = null)
-        {
-            var message = ConvertToMessage(@event, userDictionary);
-
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-
-            await topicClient.SendAsync(message);
-        }
 
         private Message ConvertToMessage(Event @event, IDictionary<string, string> userDictionary = null, string partitionKey = "")
         {
@@ -74,17 +66,6 @@
             var topicClient = _serviceBusPersisterConnection.CreateModel();
 
             await topicClient.SendAsync(message);
-        }
-
-        public async Task PublishAsync(IEnumerable<IntegrationEvent> eventList, IDictionary<string, string> userDictionary = null)
-        {
-            if (eventList == null || !eventList.Any())
-                return;
-
-            var messageList = eventList.Select(@event => ConvertToMessage(@event, userDictionary)).ToList();
-
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-            await topicClient.SendAsync(messageList);
         }
 
         public async Task PublishAsync(IEnumerable<Event> eventList, string partitionKey, IDictionary<string, string> userDictionary = null)

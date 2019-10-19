@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CanopyManage.Common.EventBus.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -43,6 +44,16 @@ namespace CanopyManage.WebService
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            //var eventBus = app.ApplicationServices.GetRequiredService<IEventBusPublisher>();
+
+            //eventBus.SubscribeAsync<UserCheckoutIntegrationEvent,
+            //   IIntegrationEventHandler<UserCheckoutIntegrationEvent>>();
         }
     }
 }
