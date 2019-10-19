@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CanopyManage.Domain.SeedWork
 {
-    public interface IRepository<TEntity, TIdentity> where TEntity : BaseEntity<TIdentity>
+    public interface IRepository<TEntity, TIdentity> : IReadOnlyRepository<TEntity, TIdentity> 
+        where TEntity : BaseEntity<TIdentity>
     {
-        IEnumerable<TEntity> GetAll();
-        TEntity Get(TIdentity id);
-        void Insert(TEntity entity);
-        void Update(TEntity entity);
-        void Delete(TEntity entity);
+        Task<TEntity> InsertAsync(TEntity entity, CancellationToken cancellationToken);
+        Task<TEntity> UpdateAsync(TEntity entity, CancellationToken cancellationToken);
+        Task DeleteAsync(TEntity entity, CancellationToken cancellationToken);
     }
 }
