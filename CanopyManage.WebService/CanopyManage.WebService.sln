@@ -9,6 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanopyManage.Common", "..\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.IncidentService", "..\CanopyManage.IncidentService\CanopyManage.IncidentService.csproj", "{A34B971B-601F-428C-9EFC-9A8469135954}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.Domain", "..\CanopyManage.Domain\CanopyManage.Domain.csproj", "{F98F6300-4E68-465D-BA97-B546FFA764A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.Application", "..\CanopyManage.Application\CanopyManage.Application.csproj", "{28EC1F2E-ECF1-4280-B1D3-63B536B99D2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.Infrastructure", "..\CanopyManage.Infrastructure\CanopyManage.Infrastructure.csproj", "{D9780A53-3599-43AD-85FE-D26A34B71394}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +33,18 @@ Global
 		{A34B971B-601F-428C-9EFC-9A8469135954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A34B971B-601F-428C-9EFC-9A8469135954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A34B971B-601F-428C-9EFC-9A8469135954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F98F6300-4E68-465D-BA97-B546FFA764A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F98F6300-4E68-465D-BA97-B546FFA764A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F98F6300-4E68-465D-BA97-B546FFA764A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F98F6300-4E68-465D-BA97-B546FFA764A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28EC1F2E-ECF1-4280-B1D3-63B536B99D2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28EC1F2E-ECF1-4280-B1D3-63B536B99D2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28EC1F2E-ECF1-4280-B1D3-63B536B99D2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28EC1F2E-ECF1-4280-B1D3-63B536B99D2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9780A53-3599-43AD-85FE-D26A34B71394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9780A53-3599-43AD-85FE-D26A34B71394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9780A53-3599-43AD-85FE-D26A34B71394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9780A53-3599-43AD-85FE-D26A34B71394}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
