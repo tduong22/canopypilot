@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CanopyManage.WebService.Compositions
 {
-    public static class EventBus
+    public static class EventBusComposition
     {
         public static IServiceCollection AddEventBus(this IServiceCollection services)
         {
