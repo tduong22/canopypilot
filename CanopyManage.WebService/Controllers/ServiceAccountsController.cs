@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CanopyManage.Application.Commands.SubmitServiceAccount;
+using CanopyManage.WebService.Requests;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CanopyManage.WebService.Controllers
 {
@@ -8,6 +13,13 @@ namespace CanopyManage.WebService.Controllers
     [ApiController]
     public class ServiceAccountsController : ControllerBase
     {
+        private readonly IMediator mediator;
+
+        public ServiceAccountsController(IMediator mediator)
+        {
+            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
@@ -15,8 +27,27 @@ namespace CanopyManage.WebService.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] ServiceAccountSubmissionRequest request)
         {
+            try
+            {
+                var command = new SubmitServiceAccountCommand()
+                {
+                    ServiceNowSettingID = request.ServiceNowSettingID,
+                    TenantId = request.TenantId,
+                    ServiceNowUsername = request.ServiceNowUsername,
+                    ServiceNowPassword = request.ServiceNowPassword
+                };
+
+                await mediator.Send(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest();
+            }
         }
     }
 }

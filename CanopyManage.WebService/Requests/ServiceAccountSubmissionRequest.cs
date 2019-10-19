@@ -1,11 +1,11 @@
-﻿using MediatR;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace CanopyManage.Application.Commands.SubmitServiceAccount
+namespace CanopyManage.WebService.Requests
 {
-    public class SubmitServiceAccountCommand : IRequest
+    public class ServiceAccountSubmissionRequest
     {
         public int ServiceNowSettingID { get; set; }
         public string TenantId { get; set; }

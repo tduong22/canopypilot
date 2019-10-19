@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using CanopyManage.Domain.Aggregates;
+using CanopyManage.Domain.SeedWork;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +11,21 @@ namespace CanopyManage.Application.Commands.SubmitServiceAccount
 {
     public class SubmitServiceAccountCommandHandler : IRequestHandler<SubmitServiceAccountCommand>
     {
-        public Task<Unit> Handle(SubmitServiceAccountCommand request, CancellationToken cancellationToken)
+        private readonly IRepository<AzureResource<ServiceNowServiceAccount>, string> repository;
+
+        public SubmitServiceAccountCommandHandler(IRepository<AzureResource<ServiceNowServiceAccount>, string> repository)
         {
-            throw new NotImplementedException();
+            this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        }
+
+        public async Task<Unit> Handle(SubmitServiceAccountCommand request, CancellationToken cancellationToken)
+        {
+            var serviceNowServiceAccount = new ServiceNowServiceAccount(request.ServiceNowSettingID);
+            var azureResource = new AzureResource<ServiceNowServiceAccount>(request.TenantId, serviceNowServiceAccount);
+
+            await repository.InsertAsync(azureResource, cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

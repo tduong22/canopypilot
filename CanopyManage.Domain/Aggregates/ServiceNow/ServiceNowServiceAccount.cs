@@ -2,6 +2,11 @@
 {
     public class ServiceNowServiceAccount : ServiceAccount
     {
-        public string ServiceNowSettingId { get; set; }
+        public ServiceNowServiceAccount(int serviceNowSettingId)
+        {
+            ServiceNowSettingId = serviceNowSettingId;
+        }
+
+        public int ServiceNowSettingId { get; set; }
     }
 }

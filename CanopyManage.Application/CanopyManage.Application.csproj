@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CanopyManage.Common\CanopyManage.Common.csproj" />
+    <ProjectReference Include="..\CanopyManage.Domain\CanopyManage.Domain.csproj" />
   </ItemGroup>
 
 </Project>

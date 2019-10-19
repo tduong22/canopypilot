@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="3.2.1" />
@@ -19,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CanopyManage.Application\CanopyManage.Application.csproj" />
     <ProjectReference Include="..\CanopyManage.Common\CanopyManage.Common.csproj" />
+    <ProjectReference Include="..\CanopyManage.Infrastructure\CanopyManage.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
