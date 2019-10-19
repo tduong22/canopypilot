@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.WebService", "CanopyManage.WebService.csproj", "{B74BDDDD-ACC9-48D8-9B3F-73C961D5D54B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanopyManage.WebService", "CanopyManage.WebService.csproj", "{B74BDDDD-ACC9-48D8-9B3F-73C961D5D54B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.Common", "..\CanopyManage.Common\CanopyManage.Common.csproj", "{3006C1EB-DD9B-4684-97EF-81764C69A37E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CanopyManage.Common", "..\CanopyManage.Common\CanopyManage.Common.csproj", "{3006C1EB-DD9B-4684-97EF-81764C69A37E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CanopyManage.IncidentService", "..\CanopyManage.IncidentService\CanopyManage.IncidentService.csproj", "{A34B971B-601F-428C-9EFC-9A8469135954}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3006C1EB-DD9B-4684-97EF-81764C69A37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3006C1EB-DD9B-4684-97EF-81764C69A37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3006C1EB-DD9B-4684-97EF-81764C69A37E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A34B971B-601F-428C-9EFC-9A8469135954}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A34B971B-601F-428C-9EFC-9A8469135954}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A34B971B-601F-428C-9EFC-9A8469135954}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A34B971B-601F-428C-9EFC-9A8469135954}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

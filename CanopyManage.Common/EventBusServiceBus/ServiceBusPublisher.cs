@@ -21,7 +21,7 @@
 
         public ServiceBusPublisher(
             IServiceBusPersisterConnection serviceBusPersisterConnection,
-             ILogger<ServiceBusPublisher> logger,
+            ILogger<ServiceBusPublisher> logger,
             string eventSourceSystem)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection ?? throw new ArgumentNullException(nameof(serviceBusPersisterConnection));
