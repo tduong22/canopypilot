@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CanopyManage.Domain.SeedWork
 {
-    public class AzureResource<TEntity> : BaseEntity<string>
+    public interface IAzureResource 
     {
-        public string TenantId { get; set; }
+       string TenantId { get; set; }
     }
 }

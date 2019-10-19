@@ -1,52 +1,33 @@
 ﻿using CanopyManage.Infrastructure.KeyVault;
 using Microsoft.Azure.KeyVault;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CanopyManage.Infrastructure.Azure.KeyVault
 {
     public class ConfigKeyVault : IConfigKeyVault
     {
-        private static string _clientSecret;
-        private static string _clientId;
-        private static string _keyVaultEndPoint;
+        private string _clientSecret;
+        private string _clientId;
+        private string _keyVaultEndPoint;
 
-        public ConfigKeyVault()
-        {
-        }
+        private readonly IKeyVaultAuthenticator _keyVaultAuthenticator;
 
-        public ConfigKeyVault(string keyVaultEndpoint, string clientId, string clientSecret)
+        public ConfigKeyVault(string keyVaultEndpoint, string clientId, string clientSecret, IKeyVaultAuthenticator keyVaultAuthenticator)
         {
+            _keyVaultAuthenticator = keyVaultAuthenticator;
             _keyVaultEndPoint = keyVaultEndpoint;
             _clientId = clientId;
             _clientSecret = clientSecret;
         }
 
-        public static async Task<string> GetToken(string authority, string resource, string scope)
+        public Task<string> GetTokenAsync(string authority, string resource, string scope)
         {
-            try
-            {
-                var authContext = new AuthenticationContext(authority);
-                var clientCred = new ClientCredential(_clientId,
-                    _clientSecret);
-                var result = await authContext.AcquireTokenAsync(resource, clientCred).ConfigureAwait(false);
-
-                if (result == null)
-                    throw new InvalidOperationException("Failed to obtain the JWT token");
-
-                return result.AccessToken;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
+            return _keyVaultAuthenticator.GetToken(_clientId, _clientSecret, authority, resource, scope);
         }
-        public async Task<string> GetSecureSecret(string secretName)
+        public async Task<string> GetSecureSecretAsync(string secretName, CancellationToken cancellationToken)
         {
-            var kv = new KeyVaultClient(GetToken);
+            var kv = new KeyVaultClient(GetTokenAsync);
             var sec = await kv.GetSecretAsync(_keyVaultEndPoint, secretName);
             return sec.Value;
         }

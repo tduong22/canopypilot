@@ -1,5 +1,6 @@
 ﻿using CanopyManage.Domain.Aggregates;
 using CanopyManage.Domain.SeedWork;
+using CanopyManage.Infrastructure.Azure.KeyVault;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,38 +10,41 @@ using System.Threading.Tasks;
 
 namespace CanopyManage.Infrastructure.Repositories
 {
-    public class ServiceAccountKeyVaultRepository : IRepository<AzureResource<ServiceNowServiceAccount>, string>
+    public class ServiceAccountKeyVaultRepository : IRepository<ServiceNowServiceAccount, string>
     {
-        public ServiceAccountKeyVaultRepository()
+        private readonly IDataKeyVault _dataKeyVault;
+
+        public ServiceAccountKeyVaultRepository(IDataKeyVault dataKeyVault)
         {
+            _dataKeyVault = dataKeyVault;
         }
 
-        public Task DeleteAsync(AzureResource<ServiceNowServiceAccount> entity, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IQueryable<AzureResource<ServiceNowServiceAccount>>> FindByAsync(Expression<Func<AzureResource<ServiceNowServiceAccount>, bool>> predicate, CancellationToken cancellationToken)
+        public Task DeleteAsync(ServiceNowServiceAccount entity, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<AzureResource<ServiceNowServiceAccount>>> GetAllAsync(CancellationToken cancellationToken)
+        public Task<IQueryable<ServiceNowServiceAccount>> FindByAsync(Expression<Func<ServiceNowServiceAccount, bool>> predicate, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AzureResource<ServiceNowServiceAccount>> GetByIdAsync(string id, CancellationToken cancellationToken)
+        public Task<IEnumerable<ServiceNowServiceAccount>> GetAllAsync(CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AzureResource<ServiceNowServiceAccount>> InsertAsync(AzureResource<ServiceNowServiceAccount> entity, CancellationToken cancellationToken)
+        public Task<ServiceNowServiceAccount> GetByIdAsync(string id, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }
 
-        public Task<AzureResource<ServiceNowServiceAccount>> UpdateAsync(AzureResource<ServiceNowServiceAccount> entity, CancellationToken cancellationToken)
+        public Task<ServiceNowServiceAccount> InsertAsync(ServiceNowServiceAccount entity, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ServiceNowServiceAccount> UpdateAsync(ServiceNowServiceAccount entity, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
         }

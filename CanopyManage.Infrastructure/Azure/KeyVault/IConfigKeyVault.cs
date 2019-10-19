@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace CanopyManage.Infrastructure.KeyVault
 {
     public interface IConfigKeyVault
     {
-        Task<string> GetSecureSecret(string secretName);
+        Task<string> GetSecureSecretAsync(string secretName, CancellationToken cancellationToken);
     }
 }
