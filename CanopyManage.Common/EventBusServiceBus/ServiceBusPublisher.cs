@@ -59,7 +59,7 @@
             return message;
         }
 
-        public async Task PublishAsync(Event @event, string partitionKey, IDictionary<string, string> userDictionary = null)
+        public async Task PublishAsync(Event @event, string partitionKey = "", IDictionary<string, string> userDictionary = null)
         {
             var message = ConvertToMessage(@event, userDictionary, partitionKey);
 
@@ -68,7 +68,7 @@
             await topicClient.SendAsync(message);
         }
 
-        public async Task PublishAsync(IEnumerable<Event> eventList, string partitionKey, IDictionary<string, string> userDictionary = null)
+        public async Task PublishAsync(IEnumerable<Event> eventList, string partitionKey = "", IDictionary<string, string> userDictionary = null)
         {
             if (eventList == null || !eventList.Any())
                 return;
