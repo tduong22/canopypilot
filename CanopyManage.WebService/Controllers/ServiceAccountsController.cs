@@ -20,12 +20,6 @@ namespace CanopyManage.WebService.Controllers
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
-
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ServiceAccountSubmissionRequest request)
         {
