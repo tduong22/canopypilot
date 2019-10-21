@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using CanopyManage.Infrastructure.Azure.KeyVault;
+﻿using CanopyManage.Infrastructure.Azure.KeyVault;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace CanopyManage.WebService
 {
@@ -20,7 +13,13 @@ namespace CanopyManage.WebService
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                   .ConfigureAppConfiguration((context, config) => AppConfigBuilder.ConfigAzureKevaultConfiguration(context, config))
+                   .ConfigureAppConfiguration((context, config) =>
+                   {
+                       if (context.HostingEnvironment.IsProduction())
+                       {
+                           AppConfigBuilder.ConfigAzureKevaultConfiguration(context, config);
+                       }
+                   })
                    .UseStartup<Startup>();
     }
 }
