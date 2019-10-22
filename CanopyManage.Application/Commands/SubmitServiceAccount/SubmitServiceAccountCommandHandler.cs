@@ -2,14 +2,12 @@
 using CanopyManage.Domain.SeedWork;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CanopyManage.Application.Commands.SubmitServiceAccount
 {
-    public class SubmitServiceAccountCommandHandler : IRequestHandler<SubmitServiceAccountCommand>
+    public class SubmitServiceAccountCommandHandler : IRequestHandler<SubmitServiceAccountCommand, SubmitServiceAccountCommandResponse>
     {
         private readonly IRepository<ServiceNowServiceAccount, string> repository;
 
@@ -18,15 +16,29 @@ namespace CanopyManage.Application.Commands.SubmitServiceAccount
             this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
 
-        public async Task<Unit> Handle(SubmitServiceAccountCommand request, CancellationToken cancellationToken)
+        public async Task<SubmitServiceAccountCommandResponse> Handle(SubmitServiceAccountCommand request, CancellationToken cancellationToken)
         {
-            var serviceNowServiceAccount = new ServiceNowServiceAccount(request.ServiceNowSettingID,
-                                                                        request.TenantId,
-                                                                        request.ServiceNowUsername,
-                                                                        request.ServiceNowPassword);
-            await repository.InsertAsync(serviceNowServiceAccount, cancellationToken);
 
-            return Unit.Value;
+            var result = new SubmitServiceAccountCommandResponse()
+            {
+                IsSuccessful = true,
+                Username = request.ServiceNowUsername
+            };
+
+            try
+            {
+                var serviceNowServiceAccount = new ServiceNowServiceAccount(request.ServiceNowSettingID,
+                                                                           request.TenantId,
+                                                                           request.ServiceNowUsername,
+                                                                           request.ServiceNowPassword);
+                ServiceNowServiceAccount insertResult = await repository.InsertAsync(serviceNowServiceAccount, cancellationToken);
+            }
+            catch
+            {
+                result.IsSuccessful = false;
+            }
+
+            return result;
         }
     }
 }

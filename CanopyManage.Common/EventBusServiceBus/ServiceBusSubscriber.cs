@@ -11,8 +11,10 @@
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     public class ServiceBusSubscriber : IEventBusSubscriber
@@ -96,15 +98,23 @@
             }
         }
 
-        public async Task SubscribeAsync<T, TH>()
+        public async Task SubscribeAsync<T, TH>(IDictionary<string, object> filterProperties = null, CancellationToken cancellationToken = default(CancellationToken))
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
-            CorrelationFilter filter = new CorrelationFilter()
+            var filter = new CorrelationFilter()
             {
                 Label = eventName
             };
+
+            if (filterProperties != null)
+            {
+                foreach (var item in filterProperties)
+                {
+                    filter.Properties.Add(item);
+                }
+            }
 
             if (_serviceBusOption.SubscriptionRequireSession)
             {

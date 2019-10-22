@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using CanopyManage.Application.Compositions;
+using CanopyManage.Application.IntegrationEvents.Events;
 using CanopyManage.Common.EventBus.Abstractions;
 using CanopyManage.Common.Logger;
 using CanopyManage.IncidentService.Compositions;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 
 namespace CanopyManage.IncidentService
 {
@@ -41,11 +43,13 @@ namespace CanopyManage.IncidentService
                     .AddSwagger()
                     .AddEventBusPublisher(Configuration["ServiceBus:ConnectionString"], Environment.EnvironmentName)
                     .AddEventBusSubscriber(Configuration["ServiceBus:ConnectionString"], Configuration["ServiceBus:SubscriptionClientName"])
-                    .AddMediator();
+                    .AddMediator()
+                    .AddExternalServices();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
-            builder.RegisterModule(new FluentValidationModule());
+            builder.RegisterModule(new EventHandlingModule())
+                .RegisterModule(new FluentValidationModule());
 
             return new AutofacServiceProvider(builder.Build());
         }
@@ -84,9 +88,12 @@ namespace CanopyManage.IncidentService
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
-
-            //eventBus.SubscribeAsync<UserCheckoutIntegrationEvent,
-            //   IIntegrationEventHandler<UserCheckoutIntegrationEvent>>();
+            var filterProperties = new Dictionary<string, object>
+            {
+                { "AlertType", "ServiceNow" }
+            };
+            eventBus.SubscribeAsync<IncidentSubmittedIntegrationEvent,
+               IIntegrationEventHandler<IncidentSubmittedIntegrationEvent>>(filterProperties);
         }
     }
 }
