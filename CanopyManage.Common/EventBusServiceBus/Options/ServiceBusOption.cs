@@ -62,6 +62,13 @@ namespace CanopyManage.Common.EventBusServiceBus.Options
         public EventType EventType { get; set; } = EventType.IntegrationEvent;
 
         /// <summary>
+        /// Default is Integration Event
+        /// </summary>
+        [DataMember]
+        public int PrefetchCount { get; set; }
+
+
+        /// <summary>
         /// For custom data filters.
         /// </summary>
         [DataMember]

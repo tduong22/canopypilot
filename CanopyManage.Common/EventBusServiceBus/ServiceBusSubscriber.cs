@@ -32,7 +32,7 @@
 
         public ServiceBusSubscriber(
             IServiceBusPersisterConnection serviceBusPersisterConnection,
-             ILogger<ServiceBusSubscriber> logger,
+            ILogger<ServiceBusSubscriber> logger,
             ILifetimeScope autofac,
             ServiceBusOption serviceBusOption,
             string eventSourceSystem)
@@ -52,7 +52,7 @@
 
             _subscriptionClient = new SubscriptionClient(serviceBusPersisterConnection.ServiceBusConnectionStringBuilder,
                 serviceBusOption.SubscriptionName);
-            _subscriptionClient.PrefetchCount = 0;
+            _subscriptionClient.PrefetchCount = serviceBusOption.PrefetchCount;
             RemoveDefaultRule();
             RegisterSubscriptionClientMessageHandler();
         }
