@@ -8,23 +8,31 @@ namespace CanopyManage.Application.Compositions
 {
     public static class EventBusPublisher
     {
+        public static IServiceCollection AddServiceBusTopicConnection(this IServiceCollection services, string sbConnection, string environment)
+        {
+            services.AddSingleton<IServiceBusPersisterConnection>(sp =>
+            {
+                var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
+                var serviceBusConnection = new ServiceBusConnectionStringBuilder(sbConnection);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnection, EntityType.Topic);
+            });
+
+            return services;
+        }
         public static IServiceCollection AddEventBusPublisher(this IServiceCollection services, string sbConnection, string environment)
         {
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>
             {
                 var logger = sp.GetRequiredService<ILogger<DefaultServiceBusPersisterConnection>>();
-
                 var serviceBusConnection = new ServiceBusConnectionStringBuilder(sbConnection);
-
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnection, EntityType.Topic);
             });
 
             services.AddSingleton<IEventBusPublisher, ServiceBusPublisher>(sp =>
             {
                 var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                 var logger = sp.GetRequiredService<ILogger<ServiceBusPublisher>>();
-
-                return new ServiceBusPublisher(serviceBusPersisterConnection, logger, environment);
+                return new ServiceBusPublisher(serviceBusPersisterConnection, environment);
             });
 
             return services;

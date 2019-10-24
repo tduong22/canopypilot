@@ -1,42 +1,43 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using Microsoft.Extensions.Logging;
+using Microsoft.Azure.ServiceBus.Core;
 using System;
 
 namespace CanopyManage.Common.EventBusServiceBus
 {
-    public class DefaultServiceBusPersisterConnection :IServiceBusPersisterConnection
+    public class DefaultServiceBusPersisterConnection : IServiceBusPersisterConnection
     {
-        private readonly ILogger<DefaultServiceBusPersisterConnection> _logger;
-        private ITopicClient _topicClient;
+        private EntityType _entityType;
+        private ISenderClient _senderClient;
+        private bool _disposed;
 
-        bool _disposed;
-
-        public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder,
-            ILogger<DefaultServiceBusPersisterConnection> logger)
+        public DefaultServiceBusPersisterConnection(ServiceBusConnectionStringBuilder serviceBusConnectionStringBuilder, EntityType entityType)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            
             ServiceBusConnectionStringBuilder = serviceBusConnectionStringBuilder ?? 
                 throw new ArgumentNullException(nameof(serviceBusConnectionStringBuilder));
-            _topicClient = new TopicClient(ServiceBusConnectionStringBuilder, RetryPolicy.Default);
+            
+            _entityType = entityType;
+            
+            _senderClient = entityType == EntityType.Topic
+                ? new TopicClient(ServiceBusConnectionStringBuilder, RetryPolicy.Default)
+                : (ISenderClient)new QueueClient(ServiceBusConnectionStringBuilder, ReceiveMode.PeekLock, RetryPolicy.Default);
         }
 
         public ServiceBusConnectionStringBuilder ServiceBusConnectionStringBuilder { get; }
 
-        public ITopicClient CreateModel()
+        public ISenderClient CreateModel()
         {
-            if(_topicClient.IsClosedOrClosing)
+            if(_senderClient.IsClosedOrClosing)
             {
-                _topicClient = new TopicClient(ServiceBusConnectionStringBuilder, RetryPolicy.Default);
+                _senderClient = _entityType == EntityType.Topic
+                 ? new TopicClient(ServiceBusConnectionStringBuilder, RetryPolicy.Default)
+                 : (ISenderClient)new QueueClient(ServiceBusConnectionStringBuilder, ReceiveMode.PeekLock, RetryPolicy.Default);
             }
-
-            return _topicClient;
+            return _senderClient;
         }
 
         public void Dispose()
         {
             if (_disposed) return;
-
             _disposed = true;
         }
     }

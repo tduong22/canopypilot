@@ -14,19 +14,16 @@
     public class ServiceBusPublisher : IEventBusPublisher
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
-        private readonly ILogger<ServiceBusPublisher> _logger;
+        
         public string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
         public readonly string _eventSourceSystem = "SOURCE_SYSTEM";
         public const string SOURCE_SYSTEM_KEY = "SOURCE_SYSTEM";
 
-        public ServiceBusPublisher(
-            IServiceBusPersisterConnection serviceBusPersisterConnection,
-            ILogger<ServiceBusPublisher> logger,
-            string eventSourceSystem)
+        public ServiceBusPublisher(IServiceBusPersisterConnection serviceBusPersisterConnection,
+                                   string eventSourceSystem)
         {
             _serviceBusPersisterConnection = serviceBusPersisterConnection ?? throw new ArgumentNullException(nameof(serviceBusPersisterConnection));
             _eventSourceSystem = eventSourceSystem ?? throw new ArgumentNullException(nameof(eventSourceSystem));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
 
@@ -62,22 +59,17 @@
         public async Task PublishAsync(Event @event, string partitionKey = "", IDictionary<string, string> userDictionary = null)
         {
             var message = ConvertToMessage(@event, userDictionary, partitionKey);
-
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-
-            await topicClient.SendAsync(message);
+            var senderClient = _serviceBusPersisterConnection.CreateModel();
+            await senderClient.SendAsync(message);
         }
 
         public async Task PublishAsync(IEnumerable<Event> eventList, string partitionKey = "", IDictionary<string, string> userDictionary = null)
         {
             if (eventList == null || !eventList.Any())
                 return;
-
             var messageList = eventList.Select(@event => ConvertToMessage(@event, userDictionary, partitionKey)).ToList();
-
-            var topicClient = _serviceBusPersisterConnection.CreateModel();
-            await topicClient.SendAsync(messageList);
-
+            var senderClient = _serviceBusPersisterConnection.CreateModel();
+            await senderClient.SendAsync(messageList);
         }
     }
 }

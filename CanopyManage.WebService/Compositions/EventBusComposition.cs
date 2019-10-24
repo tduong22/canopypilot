@@ -21,7 +21,7 @@ namespace CanopyManage.WebService.Compositions
 
                 var serviceBusConnection = new ServiceBusConnectionStringBuilder("EventBusConnection");
 
-                return new DefaultServiceBusPersisterConnection(serviceBusConnection, logger);
+                return new DefaultServiceBusPersisterConnection(serviceBusConnection, EntityType.Topic);
             });
 
             services.AddSingleton<IEventBusPublisher, ServiceBusPublisher>(sp =>
@@ -29,7 +29,7 @@ namespace CanopyManage.WebService.Compositions
                 var serviceBusPersisterConnection = sp.GetRequiredService<IServiceBusPersisterConnection>();
                 var logger = sp.GetRequiredService<ILogger<ServiceBusPublisher>>();
 
-                return new ServiceBusPublisher(serviceBusPersisterConnection, logger, "EventSourceSystem");
+                return new ServiceBusPublisher(serviceBusPersisterConnection, "");
             });
 
             services.AddSingleton<IEventBusSubscriber, ServiceBusSubscriber>(sp =>

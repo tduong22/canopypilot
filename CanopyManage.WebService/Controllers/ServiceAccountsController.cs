@@ -1,13 +1,14 @@
 ﻿using CanopyManage.Application.Commands.SubmitServiceAccount;
 using CanopyManage.WebService.Requests;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CanopyManage.WebService.Controllers
 {
+
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
