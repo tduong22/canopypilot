@@ -20,6 +20,8 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
         {
             var submitIncidentCommand = new SubmitIncidentCommand()
             {
+                AlertId = @event.AlertId,
+                AlertType  = @event.AlertType,
                 ServiceNowSettingID = @event.ServiceNowSettingID,
                 Title = @event.Title,
                 Message = @event.Message

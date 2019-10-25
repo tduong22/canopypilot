@@ -15,7 +15,8 @@ namespace CanopyManage.Application.Commands.SubmitIncident
         private readonly IServiceNowService _serviceNowService;
         private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
 
-        public SubmitIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher)
+        public SubmitIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher
+            )
         {
             _serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
             _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
@@ -23,22 +24,36 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 
         public async Task<Unit> Handle(SubmitIncidentCommand request, CancellationToken cancellationToken)
         {
-            var addNewIncidentRequest = new AddNewIncidentRequest()
+            IncidentSubmittedIntegrationEvent incidentSubmittedEvent;
+            try
             {
-                Title = request.Title,
-                Message = request.Message
-            };
+                var addNewIncidentRequest = new AddNewIncidentRequest()
+                {
+                    Title = request.Title,
+                    Message = request.Message
+                };
 
-            string username = "admin";
-            string password = "Password1";
-            AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
+                string username = "admin";
+                string password = "Password1";
+                AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
 
-            await _eventBusQueuePublisher.PublishAsync(new IncidentSubmittedIntegrationEvent()
+                incidentSubmittedEvent = new IncidentSubmittedIntegrationEvent()
+                {
+                    AlertId = result.Result.AlertId,
+                    ResponseCode = result.ResponseCode,
+                    Message = result.Result.Message
+                };
+            }
+            catch (Exception ex)
             {
-                AlertId = result.Result.AlertId,
-                ResponseCode = result.ResponseCode,
-                Message = result.Result.Message
-            });
+                incidentSubmittedEvent = new IncidentSubmittedIntegrationEvent()
+                {
+                    AlertId = request.AlertId,
+                    ResponseCode = "500",
+                    Message = ex.Message
+                };
+            }
+            await _eventBusQueuePublisher.PublishAsync(incidentSubmittedEvent);
             return Unit.Value;
         }
     }

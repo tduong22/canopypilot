@@ -28,14 +28,23 @@ namespace CanopyManage.Application.Services
 
             string bodyContent = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(bodyContent, Encoding.UTF8, "application/json");
-            HttpResponseMessage response =
-                await _httpClient.PostAsync(url, httpContent);
+            HttpResponseMessage response = await _httpClient.PostAsync(url, httpContent);
 
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                return new AddNewIncidentResponse()
+                {
+                    ResponseCode = ((int)response.StatusCode).ToString(),
+                    Result = new IncidentResult()
+                    {
+                        Message = await response.Content.ReadAsStringAsync()
+                    }
+                };
+            }
 
             string responseContent = await response.Content.ReadAsStringAsync();
             AddNewIncidentResponse result = JsonConvert.DeserializeObject<AddNewIncidentResponse>(responseContent);
-            result.ResponseCode = response.StatusCode.ToString();
+            result.ResponseCode = ((int)response.StatusCode).ToString();
             return result;
         }
     }

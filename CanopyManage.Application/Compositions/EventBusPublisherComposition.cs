@@ -19,6 +19,7 @@ namespace CanopyManage.Application.Compositions
 
             return services;
         }
+
         public static IServiceCollection AddEventBusPublisher(this IServiceCollection services, string sbConnection, string environment)
         {
             services.AddSingleton<IServiceBusPersisterConnection>(sp =>

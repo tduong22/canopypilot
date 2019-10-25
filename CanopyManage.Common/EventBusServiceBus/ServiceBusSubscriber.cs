@@ -102,7 +102,7 @@
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
-            var filter = new SqlFilter("");
+            var filter = new CorrelationFilter()
             {
                 Label = eventName
             };
