@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 
 namespace CanopyManage.IncidentService
 {
@@ -48,7 +47,7 @@ namespace CanopyManage.IncidentService
                     .AddEventBusSubscriber(Configuration["ServiceBus:ConnectionString"], Configuration["ServiceBus:SubscriptionClientName"], Environment.EnvironmentName)
                     .AddQueueResponsePublisher(Configuration["ServiceBusQueue:ConnectionString"])
                     .AddMediator()
-                    .AddExternalServices();
+                    .AddExternalServices(Configuration);
 
             services.AddKeyVaultRepository(Configuration["KeyVaultApp:ClientId"],
                                            Configuration["KeyVaultApp:ClientSecret"],

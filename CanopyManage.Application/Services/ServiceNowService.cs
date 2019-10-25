@@ -13,6 +13,7 @@ namespace CanopyManage.Application.Services
     public class ServiceNowService : IServiceNowService
     {
         private readonly HttpClient _httpClient;
+        private string _incidentUrl = "api/now/table/incident";
 
         public ServiceNowService(HttpClient httpClient)
         {
@@ -20,15 +21,15 @@ namespace CanopyManage.Application.Services
         }
 
         public async Task<AddNewIncidentResponse> AddNewIncidentAsync(string userName, string password, AddNewIncidentRequest request, CancellationToken cancellationToken = default)
-        {
-            string url = "https://dev87790.service-now.com/api/now/table/incident";
-
+        { 
             var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-
             string bodyContent = JsonConvert.SerializeObject(request);
-            var httpContent = new StringContent(bodyContent, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync(url, httpContent);
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post,_incidentUrl);
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            httpRequestMessage.Content = new StringContent(bodyContent, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await _httpClient.SendAsync(httpRequestMessage);
 
             if (!response.IsSuccessStatusCode)
             {
