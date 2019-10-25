@@ -47,24 +47,6 @@ namespace CanopyManage.WebService
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
             .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
 
-            /*
-            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
-            {
-                options.Authority = "https://login.microsoftonline.com/dc1473ea-4cea-43c3-ad60-4aa5a747f8d7/";
-                options.RequireHttpsMetadata = false;
-                options.ClientId = "8ccfbbec-a979-4aaf-bdf4-627bd39b39c6";
-                options.ClientSecret = "i=gx73/TonYZ:yI4U9GUgJZIPSu/zf@7";
-                options.ResponseType = "code id_token";
-                options.SaveTokens = true;
-                options.gra
-                
-                options.GetClaimsFromUserInfoEndpoint = true;
-            // options.Scope.Add();
-            options.Scope.Add("email");
-                options.Scope.Add("offline_access");
-                //options.Events = AddTenantToOIDCEvent(appConfig.Value.ApplicationId);
-            });
-              */
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new FluentValidationModule());
