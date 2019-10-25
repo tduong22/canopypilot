@@ -23,7 +23,7 @@
         private readonly IEventBusSubscriptionsManager _subsManager;
         private readonly SubscriptionClient _subscriptionClient;
         private readonly ILifetimeScope _autofac;
-        private readonly string AUTOFAC_SCOPE_NAME = "saleshub_event_bus";
+        private readonly string AUTOFAC_SCOPE_NAME = "ServiceBusSubscriberScope";
         private readonly ServiceBusOption _serviceBusOption;
         public string INTEGRATION_EVENT_SUFIX = "IntegrationEvent";
         public readonly string _eventSourceSystem = "SOURCE_SYSTEM";

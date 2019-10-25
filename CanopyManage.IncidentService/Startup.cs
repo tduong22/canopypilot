@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using CanopyManage.Infrastructure.Compositions;
 using CanopyManage.Application.Compositions;
 using CanopyManage.Application.IntegrationEvents.Events;
 using CanopyManage.Common.EventBus.Abstractions;
@@ -37,7 +38,7 @@ namespace CanopyManage.IncidentService
             {
                 opt.Filters.Add(typeof(HttpGlobalExceptionFilter));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                   .AddControllersAsServices();
+                    .AddControllersAsServices();
             services.AddApiVersioning();
             services.AddVersionedApiExplorer(options => options.GroupNameFormat = "'v'VVV");
 
@@ -49,8 +50,12 @@ namespace CanopyManage.IncidentService
                     .AddMediator()
                     .AddExternalServices();
 
+            services.AddKeyVaultRepository(Configuration["KeyVaultApp:ClientId"],
+                                           Configuration["KeyVaultApp:ClientSecret"],
+                                           Configuration["KeyVaultApp:Endpoint"]);
+
             services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
-          .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
+                    .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
 
             var builder = new ContainerBuilder();
             builder.Populate(services);

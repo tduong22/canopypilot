@@ -8,15 +8,14 @@ namespace CanopyManage.Infrastructure.Compositions
 {
     public static class RepositoryComposition
     {
-        public static IServiceCollection AddRepository(this IServiceCollection services)
+        public static IServiceCollection AddKeyVaultRepository(this IServiceCollection services, string applicationClientId, string applicationClientSecret, string keyVaultUri)
         {
-            //inject client
             services.AddScoped<IKeyVaultAuthenticator, KeyVaultAuthenticator>();
             services.AddScoped<IDataKeyVault<string, ServiceNowServiceAccount>>((sp) =>
             {
-                var clientId = "4188b8e1-b747-4db3-af27-b4ac179260a3";
-                var clientSecret = "@B_Ft/zQbr4.w9ekCEm1CAa2dQfU1u?T";
-                var keyVaultEndpoint = "https://canopy-test-vlt.vault.azure.net/";
+                var clientId = applicationClientId;
+                var clientSecret = applicationClientSecret;
+                var keyVaultEndpoint = keyVaultUri;
                 var authenticator = sp.GetRequiredService<IKeyVaultAuthenticator>();
                 return new ServiceNowServiceAccountDataKeyVault(authenticator, clientSecret, clientId, keyVaultEndpoint);
             });

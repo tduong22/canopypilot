@@ -46,7 +46,9 @@ namespace CanopyManage.WebService
             services.RegisterLogger(Configuration["Logging:InstrumentationKey"])
                     .AddSwagger()
                     .AddMediator()
-                    .AddRepository();
+                    .AddKeyVaultRepository(Configuration["KeyVaultApp:ClientId"],
+                                           Configuration["KeyVaultApp:ClientSecret"],
+                                           Configuration["KeyVaultApp:Endpoint"]);
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
