@@ -31,7 +31,7 @@ namespace CanopyManage.WebService
         {
 
             services.AddAuthentication(AzureADDefaults.JwtBearerAuthenticationScheme)
-            .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
+                    .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
 
             services.AddMvc(opt =>
             {

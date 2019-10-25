@@ -6,6 +6,8 @@ using CanopyManage.Common.EventBus.Abstractions;
 using CanopyManage.Common.Logger;
 using CanopyManage.IncidentService.Compositions;
 using CanopyManage.IncidentService.Infrastructure.Filters;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +48,9 @@ namespace CanopyManage.IncidentService
                     .AddQueueResponsePublisher(Configuration["ServiceBusQueue:ConnectionString"])
                     .AddMediator()
                     .AddExternalServices();
+
+            services.AddAuthentication(AzureADDefaults.BearerAuthenticationScheme)
+          .AddAzureADBearer(options => Configuration.Bind("AzureAd", options));
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
