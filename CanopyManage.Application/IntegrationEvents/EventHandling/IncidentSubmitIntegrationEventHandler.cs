@@ -22,9 +22,7 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
             {
                 ServiceNowSettingID = @event.ServiceNowSettingID,
                 Title = @event.Title,
-                Message = @event.Message,
-                AlertId = @event.AlertId,
-                AlertType = @event.AlertType
+                Message = @event.Message
             };
 
             await mediator.Send(submitIncidentCommand);

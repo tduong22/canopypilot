@@ -19,11 +19,11 @@ namespace CanopyManage.Application.Services
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
-        public async Task<AddNewIncidentResponse> AddNewIncidentAsync(AddNewIncidentRequest request, CancellationToken cancellationToken = default)
+        public async Task<AddNewIncidentResponse> AddNewIncidentAsync(string userName, string password, AddNewIncidentRequest request, CancellationToken cancellationToken = default)
         {
             string url = "https://dev87790.service-now.com/api/now/table/incident";
 
-            var byteArray = Encoding.ASCII.GetBytes($"admin:Password1");
+            var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
             string bodyContent = JsonConvert.SerializeObject(request);

@@ -13,12 +13,12 @@ namespace CanopyManage.Application.Commands.SubmitIncident
     public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentCommand>
     {
         private readonly IServiceNowService _serviceNowService;
-        private readonly IEventBusQueuePublisher eventBusQueuePublisher;
+        private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
 
         public SubmitIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher)
         {
-            this._serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
-            this.eventBusQueuePublisher = eventBusQueuePublisher;
+            _serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
+            _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
         }
 
         public async Task<Unit> Handle(SubmitIncidentCommand request, CancellationToken cancellationToken)
@@ -29,9 +29,12 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                 Message = request.Message
             };
 
-            AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(addNewIncidentRequest, cancellationToken);
+            string username = "admin";
+            string password = "Password1";
+            AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
 
-            await eventBusQueuePublisher.PublishAsync(new IncidentSubmittedIntegrationEvent() { 
+            await _eventBusQueuePublisher.PublishAsync(new IncidentSubmittedIntegrationEvent()
+            {
                 AlertId = result.Result.AlertId,
                 ResponseCode = result.ResponseCode,
                 Message = result.Result.Message

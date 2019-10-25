@@ -7,7 +7,7 @@ namespace CanopyManage.Application.Services
 {
     public interface IServiceNowService
     {
-        Task<AddNewIncidentResponse> AddNewIncidentAsync(AddNewIncidentRequest request, CancellationToken cancellationToken = default);
+        Task<AddNewIncidentResponse> AddNewIncidentAsync(string userName, string password, AddNewIncidentRequest request, CancellationToken cancellationToken = default);
 
     }
 }
