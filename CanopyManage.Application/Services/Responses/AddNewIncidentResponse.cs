@@ -13,7 +13,7 @@ namespace CanopyManage.Application.Services.Responses
 
     public class IncidentResult {
 
-        [JsonProperty("sys_id")]
+        [JsonIgnore()]
         public string AlertId { get; set; }
 
         [JsonProperty("short_description")]

@@ -17,6 +17,13 @@ namespace CanopyManage.Common.EventBusServiceBus.Options
         /// </summary>
         [DataMember]
         public bool SubscriptionRequireSession { get; set; } = true;
+
+        /// <summary>
+        /// If subscription require sessions. If specified true, also update SessionIdFilter so that the subscription can filter out un-matched messages. 
+        /// </summary>
+        [DataMember]
+        public bool SubscriptionRequirePartition { get; set; } = true;
+
         /// <summary>
         /// Require to check whether the subscription is existed before, otherwise created if not existed. Default is true.
         /// </summary>
@@ -42,6 +49,12 @@ namespace CanopyManage.Common.EventBusServiceBus.Options
         /// </summary>
         [DataMember]
         public string SessionIdFilter { get; set; }
+
+        /// <summary>
+        /// Along with SubscriptionRequireSession, specify the key that used to filter the messages on the receiver side
+        /// </summary>
+        [DataMember]
+        public string PartitionKeyFilter { get; set; }
 
         /// <summary>
         /// The Service Bus Connection string with topic name in it.

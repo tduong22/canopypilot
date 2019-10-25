@@ -33,7 +33,7 @@ namespace CanopyManage.IncidentService.Compositions
                 {
                     SubscriptionName = subscriptionName,
                     CheckSubscriptionExist = true,
-                    SubscriptionRequireSession = false
+                    SessionIdFilter = "ServiceNow"
                 };
 
                 return new ServiceBusSubscriber(serviceBusPersisterConnection, logger,

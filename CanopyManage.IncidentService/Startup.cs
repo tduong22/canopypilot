@@ -94,12 +94,8 @@ namespace CanopyManage.IncidentService
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBusSubscriber>();
-            var filterProperties = new Dictionary<string, object>
-            {
-                { "AlertType", "ServiceNow" }
-            };
             eventBus.SubscribeAsync<IncidentSubmitIntegrationEvent,
-               IIntegrationEventHandler<IncidentSubmitIntegrationEvent>>(filterProperties);
+               IIntegrationEventHandler<IncidentSubmitIntegrationEvent>>();
         }
     }
 }

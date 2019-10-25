@@ -31,8 +31,6 @@ namespace CanopyManage.Application.Services
             HttpResponseMessage response =
                 await _httpClient.PostAsync(url, httpContent);
 
-            response.EnsureSuccessStatusCode();
-
             string responseContent = await response.Content.ReadAsStringAsync();
             AddNewIncidentResponse result = JsonConvert.DeserializeObject<AddNewIncidentResponse>(responseContent);
             result.ResponseCode = response.StatusCode.ToString();
