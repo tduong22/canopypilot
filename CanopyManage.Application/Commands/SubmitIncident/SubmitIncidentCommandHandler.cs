@@ -1,10 +1,10 @@
-﻿using CanopyManage.Application.Services;
+﻿using CanopyManage.Application.IntegrationEvents.Events;
+using CanopyManage.Application.Services;
 using CanopyManage.Application.Services.Requests;
 using CanopyManage.Application.Services.Responses;
+using CanopyManage.Common.EventBus.Abstractions;
 using MediatR;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,11 +12,13 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 {
     public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentCommand>
     {
-        private readonly IServiceNowService serviceNowService;
+        private readonly IServiceNowService _serviceNowService;
+        private readonly IEventBusQueuePublisher eventBusQueuePublisher;
 
-        public SubmitIncidentCommandHandler(IServiceNowService serviceNowService)
+        public SubmitIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher)
         {
-            this.serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
+            this._serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
+            this.eventBusQueuePublisher = eventBusQueuePublisher;
         }
 
         public async Task<Unit> Handle(SubmitIncidentCommand request, CancellationToken cancellationToken)
@@ -27,9 +29,13 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                 Message = request.Message
             };
 
-            AddNewIncidentResponse result = await serviceNowService.AddNewIncidentAsync(addNewIncidentRequest, cancellationToken);
-            
-            //Publish message to queue
+            AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(addNewIncidentRequest, cancellationToken);
+
+            await eventBusQueuePublisher.PublishAsync(new IncidentSubmittedIntegrationEvent() { 
+                AlertId = result.Result.AlertId,
+                ResponseCode = result.ResponseCode,
+                Message = result.Result.Message
+            });
             return Unit.Value;
         }
     }

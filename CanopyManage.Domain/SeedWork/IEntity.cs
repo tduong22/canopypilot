@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CanopyManage.Domain.SeedWork
+﻿namespace CanopyManage.Domain.SeedWork
 {
     public interface IEntity
     {

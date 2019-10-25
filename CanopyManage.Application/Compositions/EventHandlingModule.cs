@@ -1,9 +1,6 @@
 ﻿using Autofac;
 using CanopyManage.Common.EventBus.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace CanopyManage.Application.Compositions
 {

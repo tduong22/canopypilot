@@ -18,7 +18,7 @@ namespace CanopyManage.Application.Commands.SubmitAlert
 
         public async Task<Unit> Handle(SubmitAlertCommand request, CancellationToken cancellationToken)
         {
-            var evt = new IncidentSubmittedIntegrationEvent()
+            var evt = new IncidentSubmitIntegrationEvent()
             {
                 AlertId = request.AlertId,
                 ServiceNowSettingID = request.ServiceNowSettingID,

@@ -42,14 +42,15 @@ namespace CanopyManage.IncidentService
             services.RegisterLogger(Configuration["Logging:InstrumentationKey"])
                     .AddSwagger()
                     .AddEventBusPublisher(Configuration["ServiceBus:ConnectionString"], Environment.EnvironmentName)
-                    .AddEventBusSubscriber(Configuration["ServiceBus:ConnectionString"], Configuration["ServiceBus:SubscriptionClientName"])
+                    .AddEventBusSubscriber(Configuration["ServiceBus:ConnectionString"], Configuration["ServiceBus:SubscriptionClientName"], Environment.EnvironmentName)
+                    .AddQueueResponsePublisher(Configuration["ServiceBusQueue:ConnectionString"])
                     .AddMediator()
                     .AddExternalServices();
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
             builder.RegisterModule(new EventHandlingModule())
-                .RegisterModule(new FluentValidationModule());
+                   .RegisterModule(new FluentValidationModule());
 
             return new AutofacServiceProvider(builder.Build());
         }
@@ -92,8 +93,8 @@ namespace CanopyManage.IncidentService
             {
                 { "AlertType", "ServiceNow" }
             };
-            eventBus.SubscribeAsync<IncidentSubmittedIntegrationEvent,
-               IIntegrationEventHandler<IncidentSubmittedIntegrationEvent>>(filterProperties);
+            eventBus.SubscribeAsync<IncidentSubmitIntegrationEvent,
+               IIntegrationEventHandler<IncidentSubmitIntegrationEvent>>(filterProperties);
         }
     }
 }

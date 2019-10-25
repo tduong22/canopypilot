@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CanopyManage.Application\CanopyManage.Application.csproj" />
     <ProjectReference Include="..\CanopyManage.Common\CanopyManage.Common.csproj" />
+    <ProjectReference Include="..\CanopyManage.Infrastructure\CanopyManage.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

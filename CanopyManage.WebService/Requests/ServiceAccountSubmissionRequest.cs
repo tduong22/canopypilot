@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CanopyManage.WebService.Requests
+﻿namespace CanopyManage.WebService.Requests
 {
     public class ServiceAccountSubmissionRequest
     {

@@ -31,14 +31,11 @@ namespace CanopyManage.Application.Services
             HttpResponseMessage response =
                 await _httpClient.PostAsync(url, httpContent);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                
-            }
+            response.EnsureSuccessStatusCode();
 
             string responseContent = await response.Content.ReadAsStringAsync();
             AddNewIncidentResponse result = JsonConvert.DeserializeObject<AddNewIncidentResponse>(responseContent);
-
+            result.ResponseCode = response.StatusCode.ToString();
             return result;
         }
     }

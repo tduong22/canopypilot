@@ -1,7 +1,6 @@
 ﻿using CanopyManage.Application.Commands.SubmitServiceAccount;
 using CanopyManage.WebService.Requests;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;

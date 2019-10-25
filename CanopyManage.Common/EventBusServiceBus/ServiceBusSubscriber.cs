@@ -9,7 +9,6 @@
     using Microsoft.Azure.ServiceBus.Management;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -103,7 +102,7 @@
             where TH : IIntegrationEventHandler<T>
         {
             var eventName = typeof(T).Name.Replace(INTEGRATION_EVENT_SUFIX, "");
-            var filter = new CorrelationFilter()
+            var filter = new SqlFilter("");
             {
                 Label = eventName
             };

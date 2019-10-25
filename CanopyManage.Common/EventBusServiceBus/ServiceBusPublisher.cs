@@ -1,17 +1,16 @@
-﻿namespace CanopyManage.Common.EventBusServiceBus
-{
-    using CanopyManage.Common.EventBus.Abstractions;
-    using CanopyManage.Common.EventBus.Events;
-    using Microsoft.Azure.ServiceBus;
-    using Microsoft.Extensions.Logging;
-    using Newtonsoft.Json;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
+﻿using CanopyManage.Common.EventBus.Abstractions;
+using CanopyManage.Common.EventBus.Events;
+using Microsoft.Azure.ServiceBus;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-    public class ServiceBusPublisher : IEventBusPublisher
+namespace CanopyManage.Common.EventBusServiceBus
+{
+    public class ServiceBusPublisher : IEventBusPublisher, IEventBusTopicPublisher, IEventBusQueuePublisher
     {
         private readonly IServiceBusPersisterConnection _serviceBusPersisterConnection;
         

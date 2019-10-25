@@ -1,10 +1,8 @@
 ﻿using CanopyManage.Application.Commands.SubmitAlert;
-using CanopyManage.Application.Commands.SubmitServiceAccount;
 using CanopyManage.IncidentService.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CanopyManage.IncidentService.Controllers

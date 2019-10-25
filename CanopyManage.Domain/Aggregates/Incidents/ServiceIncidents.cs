@@ -12,6 +12,14 @@ namespace CanopyManage.Domain.Aggregates
         Apocalypse = 9999
     }
 
+    public enum ServiceIncidentStatus
+    {
+        Initial = 10,
+        Submitted = 20,
+        Rejected = 30,
+        Unverified = 9999
+    }
+
     public class ServiceIncident : BaseEntity<string>
     {
         public override string Id
@@ -25,6 +33,12 @@ namespace CanopyManage.Domain.Aggregates
         public string Description { get; set; }
         public string Message { get; set; }
         public DateTime DateTime { get; set; }
+        public ServiceIncidentStatus Status {get;set; }
+
         public ServiceIncidentSeverity ServiceIncidentSeverity { get; set; }
+
+        public ServiceIncident()
+        {
+        }
     }
 }

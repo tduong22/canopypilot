@@ -4,10 +4,19 @@ namespace CanopyManage.Application.Services.Responses
 {
     public class AddNewIncidentResponse
     {
-        [JsonProperty("short_description")]
-        public string Title { get; set; }
+        [JsonProperty("result")]
+        public IncidentResult Result {get;set; }
 
-        [JsonProperty("description")]
+        [JsonIgnore()]
+        public string ResponseCode { get; set; }
+    }
+
+    public class IncidentResult {
+
+        [JsonProperty("sys_id")]
+        public string AlertId { get; set; }
+
+        [JsonProperty("short_description")]
         public string Message { get; set; }
     }
 }
