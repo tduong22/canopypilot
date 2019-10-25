@@ -115,9 +115,9 @@
                 }
             }
 
-            if (_serviceBusOption.SubscriptionRequireSession)
+            if (_serviceBusOption.SubscriptionRequireSession && !string.IsNullOrEmpty(_serviceBusOption.SessionIdFilter))
             {
-                filter.SessionId = _serviceBusOption?.SessionIdFilter;
+                filter.SessionId = _serviceBusOption.SessionIdFilter;
             }
 
             var ruleDescription = new RuleDescription

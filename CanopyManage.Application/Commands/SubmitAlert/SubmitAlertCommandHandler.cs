@@ -27,7 +27,7 @@ namespace CanopyManage.Application.Commands.SubmitAlert
                 Message = request.Message
             };
 
-            await publisher.PublishAsync(evt);
+            await publisher.PublishAsync(evt, evt.AlertType);
 
             return Unit.Value;
         }

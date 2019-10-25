@@ -40,7 +40,7 @@ namespace CanopyManage.Common.EventBusServiceBus
             };
 
             if (!string.IsNullOrEmpty(partitionKey))
-                message.PartitionKey = partitionKey;
+                message.SessionId = partitionKey;
 
             message.UserProperties.Add(SOURCE_SYSTEM_KEY, _eventSourceSystem);
 
