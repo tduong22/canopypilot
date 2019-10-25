@@ -30,7 +30,8 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                 var addNewIncidentRequest = new AddNewIncidentRequest()
                 {
                     Title = request.Title,
-                    Message = request.Message
+                    Message = request.Message,
+                    AlertId = request.AlertId
                 };
 
                 string username = "admin";

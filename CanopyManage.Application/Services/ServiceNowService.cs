@@ -13,7 +13,8 @@ namespace CanopyManage.Application.Services
     public class ServiceNowService : IServiceNowService
     {
         private readonly HttpClient _httpClient;
-        private string _incidentUrl = "api/now/table/incident";
+
+        private const string _incidentUrl = "api/now/table/incident";
 
         public ServiceNowService(HttpClient httpClient)
         {
@@ -21,13 +22,8 @@ namespace CanopyManage.Application.Services
         }
 
         public async Task<AddNewIncidentResponse> AddNewIncidentAsync(string userName, string password, AddNewIncidentRequest request, CancellationToken cancellationToken = default)
-        { 
-            var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
-            string bodyContent = JsonConvert.SerializeObject(request);
-
-            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post,_incidentUrl);
-            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-            httpRequestMessage.Content = new StringContent(bodyContent, Encoding.UTF8, "application/json");
+        {
+            HttpRequestMessage httpRequestMessage = CreatePostIncidentMessage(userName, password, request);
 
             HttpResponseMessage response = await _httpClient.SendAsync(httpRequestMessage);
 
@@ -45,8 +41,24 @@ namespace CanopyManage.Application.Services
 
             string responseContent = await response.Content.ReadAsStringAsync();
             AddNewIncidentResponse result = JsonConvert.DeserializeObject<AddNewIncidentResponse>(responseContent);
+            result.Result = new IncidentResult()
+            {
+                AlertId = request.AlertId,
+                Message = result.Result?.Message
+            };
             result.ResponseCode = ((int)response.StatusCode).ToString();
             return result;
+        }
+
+        private static HttpRequestMessage CreatePostIncidentMessage(string userName, string password, AddNewIncidentRequest request)
+        {
+            var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
+            string bodyContent = JsonConvert.SerializeObject(request);
+
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, _incidentUrl);
+            httpRequestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+            httpRequestMessage.Content = new StringContent(bodyContent, Encoding.UTF8, "application/json");
+            return httpRequestMessage;
         }
     }
 }
