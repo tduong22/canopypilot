@@ -2,7 +2,7 @@
 using CanopyManage.Domain.ValueObjects;
 using System;
 
-namespace CanopyManage.Domain.Aggregates
+namespace CanopyManage.Domain.Entities
 {
     public enum ServiceIncidentSeverity
     {

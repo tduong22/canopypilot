@@ -2,7 +2,7 @@
 using CanopyManage.Domain.SeedWork;
 using CanopyManage.Domain.ValueObjects;
 
-namespace CanopyManage.Domain.Aggregates
+namespace CanopyManage.Domain.Entities
 {
     public class ServiceNowServiceAccount : ServiceAccount, IAzureResource
     {

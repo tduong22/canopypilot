@@ -1,4 +1,4 @@
-﻿using CanopyManage.Domain.Aggregates;
+﻿using CanopyManage.Domain.Entities;
 using Microsoft.Azure.KeyVault;
 using System.Threading;
 using System.Threading.Tasks;

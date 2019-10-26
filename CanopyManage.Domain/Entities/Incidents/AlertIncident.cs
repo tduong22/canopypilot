@@ -1,4 +1,4 @@
-﻿namespace CanopyManage.Domain.Aggregates
+﻿namespace CanopyManage.Domain.Entities
 {
     public class AlertIncident : ServiceIncident {
 

@@ -1,4 +1,4 @@
-﻿using CanopyManage.Domain.Aggregates;
+﻿using CanopyManage.Domain.Entities;
 using CanopyManage.Domain.SeedWork;
 using MediatR;
 using System;

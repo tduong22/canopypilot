@@ -1,4 +1,4 @@
-﻿using CanopyManage.Domain.Aggregates;
+﻿using CanopyManage.Domain.Entities;
 using CanopyManage.Domain.SeedWork;
 using CanopyManage.Infrastructure.Azure.KeyVault;
 using CanopyManage.Infrastructure.Repositories;
