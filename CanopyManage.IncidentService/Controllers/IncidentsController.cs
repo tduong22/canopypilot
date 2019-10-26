@@ -37,7 +37,7 @@ namespace CanopyManage.IncidentService.Controllers
 
             await mediator.Send(command);
 
-            return Ok();
+            return CreatedAtAction(nameof(Post), request);
         }
     }
 }
