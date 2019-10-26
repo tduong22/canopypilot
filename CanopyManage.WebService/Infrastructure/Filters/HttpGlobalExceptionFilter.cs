@@ -34,7 +34,10 @@ namespace CanopyManage.WebService.Infrastructure.Filters
                     Detail = "Please refer to the errors property for additional details."
                 };
 
-                problemDetails.Errors.Add("DomainValidations", new string[] { context.Exception.Message.ToString() });
+                foreach (var error in ((ValidationException)context.Exception).Errors)
+                {
+                    problemDetails.Errors.Add(error.PropertyName, new[] { error.ErrorMessage });
+                }
 
                 context.Result = new BadRequestObjectResult(problemDetails);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
