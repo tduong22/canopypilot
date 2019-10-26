@@ -50,7 +50,7 @@ namespace CanopyManage.Application.Services
             return result;
         }
 
-        private static HttpRequestMessage CreatePostIncidentMessage(string userName, string password, AddNewIncidentRequest request)
+        private HttpRequestMessage CreatePostIncidentMessage(string userName, string password, AddNewIncidentRequest request)
         {
             var byteArray = Encoding.ASCII.GetBytes($"{userName}:{password}");
             string bodyContent = JsonConvert.SerializeObject(request);
