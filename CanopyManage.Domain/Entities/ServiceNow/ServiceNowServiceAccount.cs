@@ -1,6 +1,5 @@
 ﻿using CanopyManage.Domain.Exceptions;
 using CanopyManage.Domain.SeedWork;
-using CanopyManage.Domain.ValueObjects;
 
 namespace CanopyManage.Domain.Entities
 {

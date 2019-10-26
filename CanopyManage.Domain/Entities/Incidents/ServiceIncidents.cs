@@ -1,5 +1,5 @@
-﻿using CanopyManage.Domain.SeedWork;
-using CanopyManage.Domain.ValueObjects;
+﻿using CanopyManage.Domain.Entities.Services;
+using CanopyManage.Domain.SeedWork;
 using System;
 
 namespace CanopyManage.Domain.Entities
