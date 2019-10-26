@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace CanopyManage.Application.IntegrationEvents.EventHandling
 {
+    /// <summary>
+    /// The Handler which handle the alert message comming from Azure Service Bus Topic
+    /// </summary>
     public class IncidentSubmitIntegrationEventHandler : IIntegrationEventHandler<IncidentSubmitIntegrationEvent>
     {
         private readonly IMediator mediator;
@@ -18,7 +21,7 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
 
         public async Task Handle(IncidentSubmitIntegrationEvent @event)
         {
-            var submitIncidentCommand = new SubmitIncidentCommand()
+            var submitIncidentCommand = new SubmitAlertIncidentCommand()
             {
                 AlertId = @event.AlertId,
                 AlertType  = @event.AlertType,

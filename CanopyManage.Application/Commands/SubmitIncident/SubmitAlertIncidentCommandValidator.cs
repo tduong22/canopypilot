@@ -2,9 +2,9 @@
 
 namespace CanopyManage.Application.Commands.SubmitIncident
 {
-    public class SubmitIncidentCommandValidator : AbstractValidator<SubmitIncidentCommand>
+    public class SubmitAlertIncidentCommandValidator : AbstractValidator<SubmitAlertIncidentCommand>
     {
-        public SubmitIncidentCommandValidator()
+        public SubmitAlertIncidentCommandValidator()
         {
             RuleFor(x=>x.AlertId).NotNull().NotEmpty();
             RuleFor(x => x.AlertType).NotNull().NotEmpty();

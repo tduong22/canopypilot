@@ -2,7 +2,7 @@
 
 namespace CanopyManage.Application.Commands.SubmitIncident
 {
-    public class SubmitIncidentCommand : IRequest
+    public class SubmitAlertIncidentCommand : IRequest
     {
         public string AlertId { get; set; }        
         public string AlertType { get; set; }

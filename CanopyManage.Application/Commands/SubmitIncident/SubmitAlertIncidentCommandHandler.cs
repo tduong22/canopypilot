@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 
 namespace CanopyManage.Application.Commands.SubmitIncident
 {
-    public class SubmitIncidentCommandHandler : IRequestHandler<SubmitIncidentCommand>
+    public class SubmitAlertIncidentCommandHandler : IRequestHandler<SubmitAlertIncidentCommand>
     {
         private readonly IServiceNowService _serviceNowService;
         private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
 
-        public SubmitIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher
+        public SubmitAlertIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher
             )
         {
             _serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
             _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
         }
 
-        public async Task<Unit> Handle(SubmitIncidentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(SubmitAlertIncidentCommand request, CancellationToken cancellationToken)
         {
             IncidentSubmittedIntegrationEvent incidentSubmittedEvent;
             try
@@ -33,7 +33,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                     Message = request.Message,
                     AlertId = request.AlertId
                 };
-
+                //Retrieve user credentitals
                 string username = "admin";
                 string password = "Password1";
                 AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
