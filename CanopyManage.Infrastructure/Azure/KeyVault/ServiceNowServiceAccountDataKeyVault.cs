@@ -42,8 +42,8 @@ namespace CanopyManage.Infrastructure.Azure.KeyVault
 
         public async Task<ServiceNowServiceAccount> GetSecretAsync(string id, CancellationToken cancellationToken)
         {
-            var userName = await _keyVaultClient.GetSecretAsync($"{id}{_userNamePostfix}", cancellationToken);
-            var password = await _keyVaultClient.GetSecretAsync($"{id}{_passwordPostfix}", cancellationToken);
+            var userName = await _keyVaultClient.GetSecretAsync(_keyVaultEndPoint, $"{id}{_userNamePostfix}", cancellationToken);
+            var password = await _keyVaultClient.GetSecretAsync(_keyVaultEndPoint, $"{id}{_passwordPostfix}", cancellationToken);
 
             return new ServiceNowServiceAccount(ServiceNowServiceAccount.GetServiceNowSettingIdFromId(id),
                                                 ServiceNowServiceAccount.GetTenantIdFromId(id),

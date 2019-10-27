@@ -10,7 +10,7 @@ namespace CanopyManage.Domain.Entities
 
         public override string Id
         {
-            get => ComposeServiceNowServiceAccountId();
+            get => ComposeServiceNowServiceAccountId(TenantId, ServiceNowSettingId);
             protected set => base.Id = value;
         }
         public ServiceNowServiceAccount(int serviceNowSettingId, string tenantId, string userName, string password)
@@ -46,9 +46,9 @@ namespace CanopyManage.Domain.Entities
             return int.Parse(serviceNowServiceAccountId.Split(_delimeter)[1]);
         }
 
-        public string ComposeServiceNowServiceAccountId()
+        public static string ComposeServiceNowServiceAccountId(string tenantId, int serviceNowSettingId)
         {
-            return TenantId + _delimeter + ServiceNowSettingId;
+            return tenantId + _delimeter + serviceNowSettingId;
         }
     }
 }

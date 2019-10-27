@@ -3,6 +3,8 @@ using CanopyManage.Application.Services;
 using CanopyManage.Application.Services.Requests;
 using CanopyManage.Application.Services.Responses;
 using CanopyManage.Common.EventBus.Abstractions;
+using CanopyManage.Domain.Entities;
+using CanopyManage.Domain.SeedWork;
 using MediatR;
 using System;
 using System.Threading;
@@ -14,12 +16,15 @@ namespace CanopyManage.Application.Commands.SubmitIncident
     {
         private readonly IServiceNowService _serviceNowService;
         private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
+        private readonly IRepository<ServiceNowServiceAccount, string> _accountRepository;
 
-        public SubmitAlertIncidentCommandHandler(IServiceNowService serviceNowService, IEventBusQueuePublisher eventBusQueuePublisher
-            )
+        public SubmitAlertIncidentCommandHandler(IServiceNowService serviceNowService, 
+                                                 IEventBusQueuePublisher eventBusQueuePublisher,
+                                                 IRepository<ServiceNowServiceAccount, string> accountRepository)
         {
             _serviceNowService = serviceNowService ?? throw new ArgumentNullException(nameof(serviceNowService));
             _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository)); ;
         }
 
         public async Task<Unit> Handle(SubmitAlertIncidentCommand request, CancellationToken cancellationToken)
@@ -33,9 +38,16 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                     Message = request.Message,
                     AlertId = request.AlertId
                 };
+
                 //Retrieve user credentitals
-                string username = "admin";
-                string password = "Password1";
+                var serviceNowAccount = await _accountRepository.GetByIdAsync(
+                    ServiceNowServiceAccount.ComposeServiceNowServiceAccountId("99", request.ServiceNowSettingID), 
+                    cancellationToken);
+
+                string username = serviceNowAccount.ServiceUserName;
+                string password = serviceNowAccount.ServiceSecret;
+
+                //submit incident to ServiceNow API
                 AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
 
                 incidentSubmittedEvent = new IncidentSubmittedIntegrationEvent()

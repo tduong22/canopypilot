@@ -15,6 +15,7 @@ namespace CanopyManage.IncidentService
             WebHost.CreateDefaultBuilder(args)
              .ConfigureAppConfiguration((context, config) =>
              {
+                 //if deployed on Production environment, use KeyVaultProvider for configuration
                  if (context.HostingEnvironment.IsProduction())
                  {
                      AppConfigBuilder.ConfigAzureKevaultConfiguration(context, config);
