@@ -18,7 +18,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
         private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
         private readonly IRepository<ServiceNowServiceAccount, string> _accountRepository;
 
-        public SubmitAlertIncidentCommandHandler(IServiceNowService serviceNowService, 
+        public SubmitAlertIncidentCommandHandler(IServiceNowService serviceNowService,
                                                  IEventBusQueuePublisher eventBusQueuePublisher,
                                                  IRepository<ServiceNowServiceAccount, string> accountRepository)
         {
@@ -29,43 +29,31 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 
         public async Task<Unit> Handle(SubmitAlertIncidentCommand request, CancellationToken cancellationToken)
         {
-            IncidentSubmittedResultIntegrationEvent incidentSubmittedResult;
-            try
+            var addNewIncidentRequest = new AddNewIncidentRequest()
             {
-                var addNewIncidentRequest = new AddNewIncidentRequest()
-                {
-                    Title = request.Title,
-                    Message = request.Message,
-                    AlertId = request.AlertId
-                };
+                Title = request.Title,
+                Message = request.Message,
+                AlertId = request.AlertId
+            };
 
-                //Retrieve user credentitals
-                var serviceNowAccount = await _accountRepository.GetByIdAsync(
-                    ServiceNowServiceAccount.ComposeServiceNowServiceAccountId("99", request.ServiceNowSettingID), 
-                    cancellationToken);
+            //Retrieve user credentitals
+            var serviceNowAccount = await _accountRepository.GetByIdAsync(
+                ServiceNowServiceAccount.ComposeServiceNowServiceAccountId("99", request.ServiceNowSettingID),
+                cancellationToken);
 
-                string username = serviceNowAccount.ServiceUserName;
-                string password = serviceNowAccount.ServiceSecret;
+            string username = serviceNowAccount.ServiceUserName;
+            string password = serviceNowAccount.ServiceSecret;
 
-                //submit incident to ServiceNow API
-                AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
+            //submit incident to ServiceNow API
+            AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
 
-                incidentSubmittedResult = new IncidentSubmittedResultIntegrationEvent()
-                {
-                    AlertId = result.Result.AlertId,
-                    ResponseCode = result.ResponseCode,
-                    Message = result.Result.Message
-                };
-            }
-            catch (Exception ex)
+            var incidentSubmittedResult = new IncidentSubmittedResultIntegrationEvent()
             {
-                incidentSubmittedResult = new IncidentSubmittedResultIntegrationEvent()
-                {
-                    AlertId = request.AlertId,
-                    ResponseCode = "500",
-                    Message = ex.Message
-                };
-            }
+                AlertId = result.Result.AlertId,
+                ResponseCode = result.ResponseCode,
+                Message = result.Result.Message
+            };
+
             await _eventBusQueuePublisher.PublishAsync(incidentSubmittedResult);
             return Unit.Value;
         }

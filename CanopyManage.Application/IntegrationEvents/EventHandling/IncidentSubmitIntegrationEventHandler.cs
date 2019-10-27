@@ -13,24 +13,40 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
     public class IncidentSubmitIntegrationEventHandler : IIntegrationEventHandler<IncidentSubmitIntegrationEvent>
     {
         private readonly IMediator mediator;
+        private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
 
-        public IncidentSubmitIntegrationEventHandler(IMediator mediator)
+        public IncidentSubmitIntegrationEventHandler(IMediator mediator, IEventBusQueuePublisher eventBusQueuePublisher)
         {
             this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
         }
 
         public async Task Handle(IncidentSubmitIntegrationEvent @event)
         {
-            var submitIncidentCommand = new SubmitAlertIncidentCommand()
+            try
             {
-                AlertId = @event.AlertId,
-                AlertType  = @event.AlertType,
-                ServiceNowSettingID = @event.ServiceNowSettingID,
-                Title = @event.Title,
-                Message = @event.Message
-            };
+                var submitIncidentCommand = new SubmitAlertIncidentCommand()
+                {
+                    AlertId = @event.AlertId,
+                    AlertType = @event.AlertType,
+                    ServiceNowSettingID = @event.ServiceNowSettingID,
+                    Title = @event.Title,
+                    Message = @event.Message
+                };
 
-            await mediator.Send(submitIncidentCommand);
+                await mediator.Send(submitIncidentCommand);
+            }
+            catch (Exception ex)
+            {
+                var errorEvent = new IncidentSubmittedResultIntegrationEvent()
+                {
+                    AlertId = @event.AlertId,
+                    ResponseCode = "500",
+                    Message = ex.Message
+                };
+
+                await _eventBusQueuePublisher.PublishAsync(errorEvent);
+            }
         }
     }
 }
