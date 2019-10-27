@@ -29,7 +29,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 
         public async Task<Unit> Handle(SubmitAlertIncidentCommand request, CancellationToken cancellationToken)
         {
-            IncidentSubmittedIntegrationEvent incidentSubmittedEvent;
+            IncidentSubmittedResultIntegrationEvent incidentSubmittedResult;
             try
             {
                 var addNewIncidentRequest = new AddNewIncidentRequest()
@@ -50,7 +50,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
                 //submit incident to ServiceNow API
                 AddNewIncidentResponse result = await _serviceNowService.AddNewIncidentAsync(username, password, addNewIncidentRequest, cancellationToken);
 
-                incidentSubmittedEvent = new IncidentSubmittedIntegrationEvent()
+                incidentSubmittedResult = new IncidentSubmittedResultIntegrationEvent()
                 {
                     AlertId = result.Result.AlertId,
                     ResponseCode = result.ResponseCode,
@@ -59,14 +59,14 @@ namespace CanopyManage.Application.Commands.SubmitIncident
             }
             catch (Exception ex)
             {
-                incidentSubmittedEvent = new IncidentSubmittedIntegrationEvent()
+                incidentSubmittedResult = new IncidentSubmittedResultIntegrationEvent()
                 {
                     AlertId = request.AlertId,
                     ResponseCode = "500",
                     Message = ex.Message
                 };
             }
-            await _eventBusQueuePublisher.PublishAsync(incidentSubmittedEvent);
+            await _eventBusQueuePublisher.PublishAsync(incidentSubmittedResult);
             return Unit.Value;
         }
     }

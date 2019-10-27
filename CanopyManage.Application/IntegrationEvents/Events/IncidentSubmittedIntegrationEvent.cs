@@ -2,7 +2,7 @@
 
 namespace CanopyManage.Application.IntegrationEvents.Events
 {
-    public class IncidentSubmittedIntegrationEvent : IntegrationEvent
+    public class IncidentSubmittedResultIntegrationEvent : IntegrationEvent
     {
         public string AlertId { get; set; }
         public string ResponseCode {get;set; }
