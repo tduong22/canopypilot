@@ -31,6 +31,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
         {
             var addNewIncidentRequest = new AddNewIncidentRequest()
             {
+                TenantId = request.TenantId,
                 Title = request.Title,
                 Message = request.Message,
                 AlertId = request.AlertId
@@ -38,7 +39,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 
             //Retrieve user credentitals
             var serviceNowAccount = await _accountRepository.GetByIdAsync(
-                ServiceNowServiceAccount.ComposeServiceNowServiceAccountId("99", request.ServiceNowSettingID),
+                ServiceNowServiceAccount.ComposeServiceNowServiceAccountId(request.TenantId, request.ServiceNowSettingID),
                 cancellationToken);
 
             string username = serviceNowAccount.ServiceUserName;

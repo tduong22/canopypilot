@@ -2,6 +2,7 @@
 {
     public class AlertSubmissionRequest
     {
+        public string TenantId { get; set; }
         public string AlertId { get; set; }
         public int ServiceNowSettingID { get; set; }
         public string AlertType { get; set; }

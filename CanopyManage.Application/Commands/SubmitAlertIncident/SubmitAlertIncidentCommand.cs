@@ -4,6 +4,7 @@ namespace CanopyManage.Application.Commands.SubmitIncident
 {
     public class SubmitAlertIncidentCommand : IRequest
     {
+        public string TenantId { get; set; }
         public string AlertId { get; set; }        
         public string AlertType { get; set; }
         public int ServiceNowSettingID { get; set; }

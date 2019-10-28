@@ -3,7 +3,7 @@ using CanopyManage.Domain.SeedWork;
 
 namespace CanopyManage.Domain.Entities
 {
-    public class ServiceNowServiceAccount : ServiceAccount, IAzureResource
+    public class ServiceNowServiceAccount : ServiceAccount, ITennant
     {
         private const char _delimeter = '-';
         private string _tenantId;

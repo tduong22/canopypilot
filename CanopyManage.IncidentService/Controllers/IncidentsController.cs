@@ -28,6 +28,7 @@ namespace CanopyManage.IncidentService.Controllers
         {
             var command = new SubmitAlertCommand()
             {
+                TenantId = request.TenantId,
                 AlertId = request.AlertId,
                 ServiceNowSettingID = request.ServiceNowSettingID,
                 AlertType = request.AlertType,

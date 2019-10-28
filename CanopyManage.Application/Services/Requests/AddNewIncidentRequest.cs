@@ -4,6 +4,7 @@ namespace CanopyManage.Application.Services.Requests
 {
     public class AddNewIncidentRequest
     {
+        public string TenantId { get; set; }
         public string AlertId {get; set; }
 
         [JsonProperty("short_description")]

@@ -1,6 +1,6 @@
 ﻿namespace CanopyManage.Domain.SeedWork
 {
-    public interface IAzureResource 
+    public interface ITennant 
     {
        string TenantId { get; set; }
     }

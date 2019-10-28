@@ -3,7 +3,7 @@ using CanopyManage.Domain.SeedWork;
 
 namespace CanopyManage.Domain.Entities
 {
-    public class ServiceNowAlertIncident : AlertIncident, IAzureResource
+    public class ServiceNowAlertIncident : AlertIncident, ITennant
     {
         private const string _serviceNowConst = "ServiceNow";
         public ServiceNowSetting ServiceNowSetting { get; set; }

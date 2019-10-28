@@ -4,6 +4,7 @@ namespace CanopyManage.Application.IntegrationEvents.Events
 {
     public class IncidentSubmitIntegrationEvent : IntegrationEvent
     {
+        public string TenantId { get; set; }
         public string AlertId { get; set; }
         public int ServiceNowSettingID { get; set; }
         public string AlertType { get; set; }
