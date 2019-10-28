@@ -5,6 +5,11 @@ namespace CanopyManage.Domain.Entities
 {
     public class ServiceNowServiceAccount : ServiceAccount, ITennant
     {
+        /// <summary>
+        /// Use | instead of - if tenantid could be a GUID
+        /// </summary>
+        //private const char _delimeter = '|';
+
         private const char _delimeter = '-';
         private string _tenantId;
 

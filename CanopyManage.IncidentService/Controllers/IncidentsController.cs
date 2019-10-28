@@ -9,7 +9,7 @@ namespace CanopyManage.IncidentService.Controllers
 {
     /// <summary>
     /// Incidents Controller serves for submitting alert messages to the service bus topic
-    /// Used if HTTP is the only protocol supported
+    /// Used for testing purpose or if HTTP is the only protocol supported
     /// </summary>
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]

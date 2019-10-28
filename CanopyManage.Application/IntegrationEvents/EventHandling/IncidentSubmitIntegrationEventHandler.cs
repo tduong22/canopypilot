@@ -1,8 +1,10 @@
 ﻿using CanopyManage.Application.Commands.SubmitIncident;
 using CanopyManage.Application.IntegrationEvents.Events;
 using CanopyManage.Common.EventBus.Abstractions;
+using FluentValidation;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CanopyManage.Application.IntegrationEvents.EventHandling
@@ -12,12 +14,12 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
     /// </summary>
     public class IncidentSubmitIntegrationEventHandler : IIntegrationEventHandler<IncidentSubmitIntegrationEvent>
     {
-        private readonly IMediator mediator;
+        private readonly IMediator _mediator;
         private readonly IEventBusQueuePublisher _eventBusQueuePublisher;
 
         public IncidentSubmitIntegrationEventHandler(IMediator mediator, IEventBusQueuePublisher eventBusQueuePublisher)
         {
-            this.mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _eventBusQueuePublisher = eventBusQueuePublisher ?? throw new ArgumentNullException(nameof(eventBusQueuePublisher));
         }
 
@@ -35,7 +37,19 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
                     Message = @event.Message
                 };
 
-                await mediator.Send(submitIncidentCommand);
+                await _mediator.Send(submitIncidentCommand);
+            }
+            catch (ValidationException valEx)
+            {
+                //This could be moved to an implementation of an implementation ValidatorBehavior for this specific pipeline
+                var errorFields = valEx.Errors.Select(x=>x.ToString());
+                var valErrorEvent = new IncidentSubmittedResultIntegrationEvent()
+                {
+                    AlertId = @event.AlertId,
+                    ResponseCode = "400",
+                    Message = valEx.Message + String.Join(",", errorFields)
+                };
+                await _eventBusQueuePublisher.PublishAsync(valErrorEvent);
             }
             catch (Exception ex)
             {
@@ -45,7 +59,6 @@ namespace CanopyManage.Application.IntegrationEvents.EventHandling
                     ResponseCode = "500",
                     Message = ex.Message
                 };
-
                 await _eventBusQueuePublisher.PublishAsync(errorEvent);
             }
         }

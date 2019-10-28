@@ -1,8 +1,11 @@
 ﻿using CanopyManage.Application.Commands.SubmitServiceAccount;
 using CanopyManage.WebService.Requests;
+using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CanopyManage.WebService.Controllers
@@ -30,12 +33,21 @@ namespace CanopyManage.WebService.Controllers
                 ServiceNowPassword = request.ServiceNowPassword
             };
 
-            var response = await mediator.Send(command);
-            
-            if (response.IsSuccessful) return Ok(response);
-            else
+            try
             {
-                return new StatusCodeResult(500);
+                var response = await mediator.Send(command);
+
+                if (response.IsSuccessful) return Ok(response);
+                else
+                {
+                    return new StatusCodeResult(500);
+                }
+            }
+            catch (ValidationException valEx)
+            {
+                //This could be moved to an implementation of an implementation ValidatorBehavior for this specific pipeline
+                var errorFields = valEx.Errors.Select(x => x.ToString());
+                return new BadRequestObjectResult(errorFields);
             }
         }
     }
