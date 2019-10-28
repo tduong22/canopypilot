@@ -6,6 +6,7 @@ namespace CanopyManage.Application.Commands.SubmitAlert
     {
         public SubmitAlertCommandValidator()
         {
+            RuleFor(x => x.TenantId).NotNull().NotEmpty();
             RuleFor(x => x.AlertId).NotNull().NotEmpty();
             RuleFor(x => x.AlertType).NotNull().NotEmpty();
             RuleFor(x => x.Title).NotNull().NotEmpty();
