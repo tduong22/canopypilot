@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace CanopyManage.WebService.Controllers
 {
-
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
@@ -31,9 +30,13 @@ namespace CanopyManage.WebService.Controllers
                 ServiceNowPassword = request.ServiceNowPassword
             };
 
-            await mediator.Send(command);
-
-            return Ok();
+            var response = await mediator.Send(command);
+            
+            if (response.IsSuccessful) return Ok(response);
+            else
+            {
+                return new StatusCodeResult(500);
+            }
         }
     }
 }
